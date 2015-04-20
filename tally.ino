@@ -31,6 +31,10 @@ void setup() {
 
   Wire.begin(); // Start the wire library for communication with the GPIO chip.
 
+  // Init:
+  for (int i=1; i<=8; i++)  {
+    pinMode(OUTPUT_START+i,OUTPUT);
+  }
   // Set:
   for (int i=1; i<=8; i++)  {
     digitalWrite(OUTPUT_START+i, HIGH);
@@ -45,15 +49,13 @@ void setup() {
 
   // Initialize a connection to the switcher:
   AtemSwitcher.begin(IPAddress(ATEM_IP), 56417);    // <= SETUP!
-//  AtemSwitcher.serialOutput(true);
   AtemSwitcher.connect();
 }
 
 
-
 void setTallyProgramOutputs()  {
    // Setting colors of input select buttons:
-  for (uint8_t i=1;i<=8;i++)  {
+  for (uint8_t i=CAMERA_START;i<CAMERA_START+8;i++)  {
     if (AtemSwitcher.getProgramTally(i))  {
       digitalWrite(OUTPUT_START+i, HIGH);
     }       
@@ -65,36 +67,36 @@ void setTallyProgramOutputs()  {
 
 void setTallyPreviewProgramOutputs()  {
    // Setting colors of input select buttons:
-  for (uint8_t i=1;i<=4;i++)  {
+  for (uint8_t i=CAMERA_START;i<CAMERA_START+4;i++)  {
     if (AtemSwitcher.getProgramTally(i))  {
       digitalWrite(OUTPUT_START+i*2-1, HIGH);
+      Serial.print(i);
+      Serial.println("PGM");
     }       
-    else {
-      digitalWrite(OUTPUT_START+i*2-1, LOW);
-    }
-
-    if (AtemSwitcher.getPreviewTally(i))  {
+    else if (AtemSwitcher.getPreviewTally(i) )  {
       digitalWrite(OUTPUT_START+i*2, HIGH);
+      Serial.print(i);
+      Serial.println("PVW");
     }       
     else {
       digitalWrite(OUTPUT_START+i*2, LOW);
+      digitalWrite(OUTPUT_START+i*2-1, LOW);
     }
   }
 }
 
-bool AtemOnline = false;
 void loop() {
 
   // Check for packets, respond to them etc. Keeping the connection alive!
   AtemSwitcher.runLoop();
 
-    // If connection is gone anyway, try to reconnect:
+  // If connection is gone anyway, try to reconnect:
   if (AtemSwitcher.isConnectionTimedOut())  {
      Serial.println("Connection to ATEM Switcher has timed out - reconnecting!");
      AtemSwitcher.connect();
   }  
 
-  // Selecting output mode: Let only ONE of the functions below be run - the others must be commented out:
-  // setTallyProgramOutputs();    // This will reflect inputs 1-8 Program tally on GPO 1-8
- setTallyPreviewProgramOutputs();    // This will reflect inputs 1-4 Program/Preview tally on GPO 1-8 (in pairs)
+  // ONLY UNCOMMENT ONE OF THE BELOW!!!
+  // setTallyProgramOutputs();        // This will reflect inputs 1-8 Program tally on GPIO 1-8
+  setTallyPreviewProgramOutputs();    // This will reflect inputs 1-4 Program/Preview tally on GPO 1-8 (in pairs)
 }

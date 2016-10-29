@@ -109,6 +109,7 @@ app.get('/api/status', (req, res) => {
   res.send({
     atem,
     outputs,
+    inputs: updater.inputState,
     testMode: state.testMode
   });
 });

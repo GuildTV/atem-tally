@@ -6,14 +6,34 @@ import {
   Form, Button,
   FormGroup, FormControl, ControlLabel,
 } from 'react-bootstrap';
-import Switch from 'react-bootstrap-switch';
 
 import OutputState from '../../state';
 
 import { LoadingBar } from '../loading';
-import { ErrorCol } from '../error';
 
+export class ButtonState extends React.Component {
+  pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
 
+  render() {
+    const { state, label } = this.props;
+
+    let style = "default"
+    switch(state){
+      case OutputState.PROGRAM:
+        style = "danger";
+        break;
+      case OutputState.PREVIEW:
+        style = "success";
+        break;
+    }
+
+    return <Button disabled bsStyle={style}>{ label > 0 ? "In " + this.pad(label, 2) : "-" }</Button>;
+  }
+}
 
 export class StatusOutputs extends React.Component {
   renderChannels(){
@@ -22,15 +42,10 @@ export class StatusOutputs extends React.Component {
     return data.outputs.map((v,i) => (
       <FormGroup key={i}>
         <Col componentClass={ControlLabel} sm={2}>
-          Output { String.fromCharCode(65 + i) }
-          { v.input > 0 ? " (Input " + v.input + ")" : " (Disabled)" }
-          :
+          Output { String.fromCharCode(65 + i) }:
         </Col>
         <Col sm={8}>
-          {
-            v.value == OutputState.PROGRAM ? "Program" : 
-              (v.value == OutputState.PREVIEW ? "Preview" : " - ")
-          }
+          <ButtonState state={v.value} label={v.input} />
         </Col>
       </FormGroup>
     ));

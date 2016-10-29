@@ -2,7 +2,7 @@ import Atem from 'atem';
 
 import OutputState from './state';
 
-const testModeTickTime = 0.5 * 1000;
+const testModeTickTime = 0.4 * 1000;
 
 export class Updater {
   constructor(state, outputWriter){

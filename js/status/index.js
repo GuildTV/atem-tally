@@ -7,6 +7,9 @@ import {
 
 import { StatusAtem } from './atem';
 import { StatusOutputs } from './outputs';
+import { StatusInputs } from './inputs';
+
+const refreshInterval = 5000;
 
 export class StatusPage extends React.Component {
   constructor(props){
@@ -24,6 +27,13 @@ export class StatusPage extends React.Component {
   // componentWillReceiveProps(newProps){
   //   this.refresh();
   // }
+
+  componentDidMount(){
+    this.refreshInterval = setInterval(() => this.refresh(), refreshInterval);
+  }
+  componentWillUnmount(){
+    clearInterval(this.refreshInterval);
+  }
 
   refresh(){
     axios.get('/api/status')
@@ -54,6 +64,8 @@ export class StatusPage extends React.Component {
           <StatusAtem data={data} />
 
           <StatusOutputs data={data} />
+
+          <StatusInputs data={data} />
 
         </Row>
       </Grid>

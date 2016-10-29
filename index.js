@@ -101,8 +101,15 @@ app.get('/api/status', (req, res) => {
     value: v
   }));
 
+  const atem = {
+    ip: state.atem.ip,
+    status: updater.getAtemState().description
+  };
+
   res.send({
-    outputs: outputs
+    atem,
+    outputs,
+    testMode: state.testMode
   });
 });
 

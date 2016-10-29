@@ -15,7 +15,7 @@ class InputSelect extends React.Component {
   render(){
     const opts = [];
     for(let i=1; i<=20; i++)
-      opts.push(<option value={i}>Input { i }</option>);
+      opts.push(<option key={i} value={i}>Input { i }</option>);
     return (
       <FormControl componentClass="select" placeholder="select" {...this.props}>
         <option value="0"> - Disabled - </option>
@@ -75,7 +75,7 @@ export class SetupInputMap extends React.Component {
     const { data } = this.state;
 
     return data.outputs.map((v,i) => (
-      <FormGroup controlId="testMode">
+      <FormGroup key={i}>
         <Col componentClass={ControlLabel} sm={2}>
           Output { String.fromCharCode(65 + i) }
         </Col>

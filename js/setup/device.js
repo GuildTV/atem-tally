@@ -75,7 +75,7 @@ export class SetupDevice extends React.Component {
     return (
       <Col xs={12}>
         <Form horizontal onSubmit={() => this.save()}>
-          <FormGroup controlId="atemIp">
+          <FormGroup>
             <Col componentClass={ControlLabel} sm={2}>
               Atem Ip:
             </Col>
@@ -84,7 +84,7 @@ export class SetupDevice extends React.Component {
             </Col>
           </FormGroup>
 
-          <FormGroup controlId="testMode">
+          <FormGroup>
             <Col componentClass={ControlLabel} sm={2}>
               Test mode:
             </Col>

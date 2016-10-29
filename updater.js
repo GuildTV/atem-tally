@@ -27,6 +27,10 @@ export class Updater {
       this.reconnect();
   }
 
+  getAtemState(){
+    return this.conn.state;
+  }
+
   atemStateChange(state){
     console.log("Atem: State", state);
   }

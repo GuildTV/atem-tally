@@ -1,5 +1,10 @@
 import React from 'react';
 
+import {
+  MenuItem
+} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+
 export class Layout extends React.Component {
   render(){
     return (
@@ -11,21 +16,18 @@ export class Layout extends React.Component {
             </div>
             <div id="navbar" className="collapse navbar-collapse">
               <ul className="nav navbar-nav">
-                <li className="active"><a href="#">Status</a></li>
-                <li><a href="#about">Setup</a></li>
+                <LinkContainer to="/status">
+                  <MenuItem eventKey={3.2}>Status</MenuItem>
+                </LinkContainer>
+                <LinkContainer to="/setup">
+                  <MenuItem eventKey={3.2}>Setup</MenuItem>
+                </LinkContainer>
               </ul>
             </div>
           </div>
         </nav>
 
-        <div className="container">
-
-          <div className="starter-template">
-            <h1>Bootstrap starter template</h1>
-            <p className="lead">Use this document as a way to quickly start any new project.<br /> All you get is this text and a mostly barebones HTML document.</p>
-          </div>
-
-        </div>
+        { this.props.children }
       </div>
     );
   }

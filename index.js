@@ -6,6 +6,7 @@ import jsonfile from 'jsonfile';
 
 import OutputState from './state';
 import { Updater } from './updater';
+import { OutputWriter } from './output-writer';
 
 import config from './config';
 import initialSetup from './setup';
@@ -26,7 +27,8 @@ const state = {
   inputs: [],
 };
 
-const updater = new Updater(state);
+const outputWriter = new OutputWriter();
+const updater = new Updater(state, outputWriter);
 
 function writeSetupFile(){
   const obj = {
@@ -64,7 +66,7 @@ app.post('/api/setup/device', (req, res) => {
   state.atem.ip = atemIp;
   writeSetupFile();
 
-  // TODO - perform reconnect + update mode
+  updater.reconnect();
   updater.startStopTestMode();
 
   res.send({
@@ -92,6 +94,17 @@ app.post('/api/setup/map', (req, res) => {
   });
 });
 
+app.get('/api/status', (req, res) => {
+  const values = updater.getValues();
+  const outputs = values.map((v, i) => ({
+    input: state.outputs[i],
+    value: v
+  }));
+
+  res.send({
+    outputs: outputs
+  });
+});
 
 //listen for http
 server.listen(config.port || 3000, "0.0.0.0", function () {

@@ -5,18 +5,21 @@ import OutputState from './state';
 const testModeTickTime = 0.5 * 1000;
 
 export class Updater {
-  constructor(state){
+  constructor(state, outputWriter){
     this.state = state;
-    this.conn = new Atem();
+    this.outputWriter = outputWriter;
 
-    this.outputState = [];
+    this.conn = new Atem();
+    this.conn.on('connectionStateChange', this.atemStateChange);
+    this.conn.on('inputTally', (a, b) => this.atemInputUpdate(a, b));
+
+    this.inputState = new Array(20).fill(0);
 
     this.testInterval = null;
     this.testPosition = -1;
     this.testState = [];
 
     for (let i=0; i<this.state.outputs.length; i++){
-      this.outputState.push(OutputState.CLEAR);
       this.testState.push(OutputState.CLEAR);
     }
 
@@ -24,18 +27,47 @@ export class Updater {
       this.reconnect();
   }
 
+  atemStateChange(state){
+    console.log("Atem: State", state);
+  }
+
+  atemInputUpdate(input, state){
+    console.log("Atem: Got update input " + input + " " + (state.program ? "Program" : (state.preview ? "Preview" : "Clear")));
+
+    this.inputState[input-1] = (state.program ? OutputState.PROGRAM : (state.preview ? OutputState.PREVIEW  : OutputState.CLEAR ));
+
+    this.inputState = new Array(20).fill(0);
+    this.outputValues();
+  }
+
   reconnect(){
     console.log("Attempting to connect to atem: " + this.state.atem.ip);
     this.conn.ip = this.state.atem.ip;
     this.conn.connect();
+
+    this.outputValues();
   }
 
   isTestMode(){
     return this.state.testMode;
   }
 
+  getValues(){
+    if (this.isTestMode())
+      return this.testState;
+
+    const st = [];
+    for (let i=0; i<this.state.outputs.length; i++){
+      const id = this.state.outputs[i];
+      st[i] = this.inputState[id];
+    }
+
+    return st;
+  }
+
   outputValues(){
-    //TODO
+    console.log("Output: Writing");
+    this.outputWriter.write(this.getValues());
   }
 
   startStopTestMode(){
@@ -76,8 +108,10 @@ export class Updater {
       console.log("TestMode: " + String.fromCharCode(65 + out) + " to " + (state ? "Preview" : "Program"));
 
     for (let i=0; i<this.testState.length; i++){
-      this.outputState[i] = out == i ? (state == 0 ? OutputState.PREVIEW : OutputState.PROGRAM) : OutputState.CLEAR;
+      this.testState[i] = out == i ? (state == 0 ? OutputState.PREVIEW : OutputState.PROGRAM) : OutputState.CLEAR;
     }
+
+    this.outputValues();
   }
 
 }

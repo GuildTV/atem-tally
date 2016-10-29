@@ -3,6 +3,7 @@ import http from 'http';
 import url from 'url';
 import bodyParser from 'body-parser';
 import jsonfile from 'jsonfile';
+import os from 'os';
 
 import OutputState from './state';
 import { Updater } from './updater';
@@ -40,6 +41,36 @@ function writeSetupFile(){
   jsonfile.writeFile('./setup.json', obj, {spaces: 2}, function(err) {
     console.error(err || "Saved setup.json")
   });
+}
+
+function getDeviceIps(){
+  const ifaces = os.networkInterfaces();
+
+  const ips = [];
+
+  Object.keys(ifaces).forEach(function (ifname) {
+    // var alias = 0;
+
+    ifaces[ifname].forEach(function (iface) {
+      if ('IPv4' !== iface.family || iface.internal !== false) {
+        // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+        return;
+      }
+
+      ips.push(iface.address);
+
+      // if (alias >= 1) {
+      //   // this single interface has multiple ipv4 addresses
+      //   console.log(ifname + ':' + alias, iface.address);
+      // } else {
+      //   // this interface has only one ipv4 adress
+      //   console.log(ifname, iface.address);
+      // }
+      // ++alias;
+    });
+  });
+
+  return ips;
 }
 
 if (initialSetup.outputCount != initialSetup.outputMap.length)
@@ -110,7 +141,8 @@ app.get('/api/status', (req, res) => {
     atem,
     outputs,
     inputs: updater.inputState,
-    testMode: state.testMode
+    testMode: state.testMode,
+    ips: getDeviceIps()
   });
 });
 

@@ -9,7 +9,7 @@ import Switch from 'react-bootstrap-switch';
 
 import { LoadingBar } from '../loading';
 
-export class StatusAtem extends React.Component {
+export class StatusMain extends React.Component {
   render(){
     const { data } = this.props;
 
@@ -38,13 +38,21 @@ export class StatusAtem extends React.Component {
             </Col>
           </FormGroup>
 
-
           <FormGroup>
             <Col componentClass={ControlLabel} sm={2}>
               Test mode:
             </Col>
             <Col sm={8}>
               <Switch value={data.testMode} readonly />
+            </Col>
+          </FormGroup>
+
+          <FormGroup>
+            <Col componentClass={ControlLabel} sm={2}>
+              Device Ip:
+            </Col>
+            <Col sm={8}>
+              <FormControl.Static>{ data.ips.join(", ") }</FormControl.Static>
             </Col>
           </FormGroup>
 

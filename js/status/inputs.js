@@ -45,7 +45,7 @@ export class StatusInputs extends React.Component {
 
     return (
       <Col xs={12}>
-        <h2>Inputs</h2>
+        <h2>Atem Inputs</h2>
 
         <p>
           { buttons }

@@ -5,7 +5,7 @@ import {
   Grid, Row, Col,
 } from 'react-bootstrap';
 
-import { StatusAtem } from './atem';
+import { StatusMain } from './main';
 import { StatusOutputs } from './outputs';
 import { StatusInputs } from './inputs';
 
@@ -24,10 +24,6 @@ export class StatusPage extends React.Component {
   componentWillMount(){
     this.refresh();
   }
-  // componentWillReceiveProps(newProps){
-  //   this.refresh();
-  // }
-
   componentDidMount(){
     this.refreshInterval = setInterval(() => this.refresh(), refreshInterval);
   }
@@ -61,7 +57,7 @@ export class StatusPage extends React.Component {
             <h1>Status</h1>
           </Col>
 
-          <StatusAtem data={data} />
+          <StatusMain data={data} />
 
           <StatusOutputs data={data} />
 

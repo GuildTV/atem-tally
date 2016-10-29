@@ -5,7 +5,6 @@ import bodyParser from 'body-parser';
 import jsonfile from 'jsonfile';
 import os from 'os';
 
-import OutputState from './state';
 import { Updater } from './updater';
 import { OutputWriter } from './output-writer';
 

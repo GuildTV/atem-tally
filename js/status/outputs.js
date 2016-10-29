@@ -1,10 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 
 import {
   Col,
   Form, Button,
-  FormGroup, FormControl, ControlLabel,
+  FormGroup, ControlLabel,
 } from 'react-bootstrap';
 
 import OutputState from '../../state';

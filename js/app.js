@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, IndexRedirect, Link, hashHistory } from 'react-router'
+import { Router, Route, IndexRedirect, hashHistory } from 'react-router'
 
 import '../less/app.less';
 

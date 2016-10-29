@@ -30,7 +30,7 @@ export class SetupDevice extends React.Component {
         error: null
       });
     })
-    .catch(error => {
+    .catch(() => {
       this.setState({
         data: null,
         error: "Failed to fetch current state"
@@ -58,7 +58,7 @@ export class SetupDevice extends React.Component {
       });
       // TODO - notify success
     })
-    .catch(error => {
+    .catch(() => {
       // TODO - notify failure
     });
   }

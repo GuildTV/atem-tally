@@ -1,8 +1,7 @@
 import React from 'react';
 
 import {
-  Col,
-  Form, Button,
+  Col, Form,
   FormGroup, FormControl, ControlLabel,
 } from 'react-bootstrap';
 import Switch from 'react-bootstrap-switch';

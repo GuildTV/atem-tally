@@ -39,7 +39,7 @@ export class StatusPage extends React.Component {
         error: null
       });
     })
-    .catch(error => {
+    .catch(() => {
       this.setState({
         data: null,
         error: "Failed to fetch status"

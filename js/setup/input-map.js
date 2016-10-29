@@ -6,7 +6,6 @@ import {
   Form, Button,
   FormGroup, FormControl, ControlLabel,
 } from 'react-bootstrap';
-import Switch from 'react-bootstrap-switch';
 
 import { LoadingBar } from '../loading';
 import { ErrorCol } from '../error';
@@ -43,7 +42,7 @@ export class SetupInputMap extends React.Component {
         error: null
       });
     })
-    .catch(error => {
+    .catch(() => {
       this.setState({
         data: null,
         error: "Failed to fetch current state"
@@ -66,7 +65,7 @@ export class SetupInputMap extends React.Component {
       });
       // TODO - notify success
     })
-    .catch(error => {
+    .catch(() => {
       // TODO - notify failure
     });
   }

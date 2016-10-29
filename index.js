@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import jsonfile from 'jsonfile';
 
 import OutputState from './state';
+import { Updater } from './updater';
 
 import config from './config';
 import initialSetup from './setup';
@@ -25,6 +26,8 @@ const state = {
   inputs: [],
 };
 
+const updater = new Updater(state);
+
 function writeSetupFile(){
   const obj = {
     "atemIp": state.atem.ip,
@@ -33,7 +36,7 @@ function writeSetupFile(){
   };
 
   jsonfile.writeFile('./setup.json', obj, {spaces: 2}, function(err) {
-    console.error(err)
+    console.error(err || "Saved setup.json")
   });
 }
 
@@ -62,6 +65,7 @@ app.post('/api/setup/device', (req, res) => {
   writeSetupFile();
 
   // TODO - perform reconnect + update mode
+  updater.startStopTestMode();
 
   res.send({
     atemIp: state.atem.ip,

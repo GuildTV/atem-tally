@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "production": "./node_modules/.bin/forever --exec babel-node index.js",
-    "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon --exec babel-node index.js",
+    "dev": "NODE_ENV=dev ./node_modules/.bin/nodemon --ignore setup.json --exec babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,6 +14,7 @@
     "url": "https://github.com/GuildTV/atem-tally"
   },
   "dependencies": {
+    "atem": "^0.1.7",
     "axios": "^0.15.2",
     "babel-cli": "^6.14.0",
     "babel-preset-es2015": "^6.14.0",
